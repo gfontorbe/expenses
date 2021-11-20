@@ -14,13 +14,16 @@ import { generateReport } from './generator';
 // };
 
 export const generateReportAction = async (fileName: string, options: GenerateOptions) : Promise<void> => {
+    console.log(options);
     const model = await extractAstNode<Model>(fileName, languageMetaData.fileExtensions, createExpensesDslServices());
 
     generateReport(model, fileName, undefined);
 }
 
 export type GenerateOptions = {
-    destination?: string;
+    save?: string,
+    tag?: string,
+    date?: string
 }
 
 export default function(): void {
@@ -40,6 +43,9 @@ export default function(): void {
     program
         .command('report')
         .argument('<file>', `possible file extensions: ${languageMetaData.fileExtensions.join(', ')}`)
+        .option('-s, --save <dir>', 'destination directory for saving the report')
+        .option('-t, --tag <tag>','report only for desired tag')
+        .option('-d, --date <date>', 'report only for desired date')
         .description('generates report for expenses registered in the file')
         .action(generateReportAction);
 
