@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.extractDestinationAndName = exports.extractAstNode = exports.extractDocument = void 0;
+exports.getFileName = exports.extractDestinationAndName = exports.extractAstNode = exports.extractDocument = void 0;
 const fs_1 = __importDefault(require("fs"));
 const colors_1 = __importDefault(require("colors"));
 const path_1 = __importDefault(require("path"));
@@ -56,4 +56,9 @@ function extractDestinationAndName(filePath, destination) {
     };
 }
 exports.extractDestinationAndName = extractDestinationAndName;
+function getFileName(filePath) {
+    let splitPath = filePath.split('\\');
+    return splitPath[splitPath.length - 1];
+}
+exports.getFileName = getFileName;
 //# sourceMappingURL=cli-util.js.map
