@@ -48,3 +48,8 @@ export function extractDestinationAndName(filePath: string, destination: string 
         name: path.basename(filePath)
     };
 }
+
+export function getFileName(filePath: string): string{
+    let splitPath = filePath.split('\\');
+    return splitPath[splitPath.length - 1];
+}
