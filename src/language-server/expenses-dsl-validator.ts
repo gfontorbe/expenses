@@ -54,9 +54,9 @@ export class ExpensesDslValidator {
         }
     }
 
-    //check that paymentDate is in format dd.mm.yy or dd.mm.yyyy
+    //check that paymentDate is in format dd.mm.yyyy
     checkPaymentDateFormat(expense: Expense | Income, accept: ValidationAcceptor):void{
-        if(!/^\d{1,2}[\.]\d{1,2}[\.](\d{4}|\d{2})$/.test(expense.paymentDate)){
+        if(!/^\d{1,2}[\.]\d{1,2}[\.]\d{4}$/.test(expense.paymentDate)){
             accept('error','Date must be in format dd.mm.yyyy', {node: expense, property: 'paymentDate'});
         }
     }
