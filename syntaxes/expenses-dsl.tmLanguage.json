@@ -1,0 +1,51 @@
+{
+  "name": "expenses-dsl",
+  "scopeName": "source.expenses-dsl",
+  "fileTypes": [
+    ".exp"
+  ],
+  "patterns": [
+    {
+      "include": "#comments"
+    },
+    {
+      "name": "keyword.control.expenses-dsl",
+      "match": "\\b(for|from|on|paid|received)\\b"
+    },
+    {
+      "name": "keyword.symbol.expenses-dsl",
+      "match": "()"
+    }
+  ],
+  "repository": {
+    "comments": {
+      "patterns": [
+        {
+          "name": "comment.block.expenses-dsl",
+          "begin": "/\\*",
+          "beginCaptures": {
+            "0": {
+              "name": "punctuation.definition.comment.expenses-dsl"
+            }
+          },
+          "end": "\\*/",
+          "endCaptures": {
+            "0": {
+              "name": "punctuation.definition.comment.expenses-dsl"
+            }
+          }
+        },
+        {
+          "begin": "//",
+          "beginCaptures": {
+            "1": {
+              "name": "punctuation.whitespace.comment.leading.expenses-dsl"
+            }
+          },
+          "end": "(?=$)",
+          "name": "comment.line.expenses-dsl"
+        }
+      ]
+    }
+  }
+}

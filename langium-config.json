@@ -1,0 +1,9 @@
+{
+    "languageId": "expenses-dsl",
+    "grammar": "src/language-server/expenses-dsl.langium",
+    "fileExtensions": [".exp"],
+    "out": "src/language-server/generated",
+    "textMate": {
+        "out": "syntaxes/expenses-dsl.tmLanguage.json"
+    }
+}
