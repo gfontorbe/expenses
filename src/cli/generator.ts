@@ -30,66 +30,86 @@ import colors from "colors";
 //     return generatedFilePath;
 // }
 
+// generate report in console
 export function generateReport(
-    model: Model,
-    filePath: string,
-    destination?: string
+  model: Model,
+  filePath: string,
+  destination?: string
 ): void {
-    const fileName = getFileName(filePath);
-    console.log(`Generating report for ${fileName}... \n`);
+  const fileName = getFileName(filePath);
+  console.log(`Generating report for ${fileName}... \n`);
 
-    console.log(
-        `Found ${model.expenses.length} expense entr${model.expenses.length > 0 ? "ies" : "y"
-        }`
-    );
-    console.log(
-        `Found ${model.incomes.length} income entr${model.incomes.length > 0 ? "ies" : "y"
-        }`
-    );
-    console.log();
+  console.log(
+    `Found ${model.expenses.length} expense entr${
+      model.expenses.length > 0 ? "ies" : "y"
+    }`
+  );
+  console.log(
+    `Found ${model.incomes.length} income entr${
+      model.incomes.length > 0 ? "ies" : "y"
+    }`
+  );
+  console.log();
 
-    console.log("Expenses: ");
-    logEntries(model.expenses);
-    console.log(colors.red(`Total expenses: ${sumOfPayments(model.expenses).toFixed(2)}eur \n`));
+  console.log("Expenses: ");
+  logEntries(model.expenses);
+  console.log(
+    colors.red(
+      `Total expenses: ${sumOfPayments(model.expenses).toFixed(2)}eur \n`
+    )
+  );
 
-    console.log("Incomes: ");
-    logEntries(model.incomes);
-    console.log(colors.green(`Total expenses: ${sumOfPayments(model.incomes).toFixed(2)}eur \n`));
+  console.log("Incomes: ");
+  logEntries(model.incomes);
+  console.log(
+    colors.green(
+      `Total expenses: ${sumOfPayments(model.incomes).toFixed(2)}eur \n`
+    )
+  );
 
-    console.log(`Balance: `);
-    let balance = getBalance(model);
-    console.log(`${balance >= 0 ? colors.green(`${balance.toFixed(2)}eur`) : colors.red(`${balance.toFixed(2)}eur`)}`);
+  console.log(`Balance: `);
+  let balance = getBalance(model);
+  console.log(
+    `${
+      balance >= 0
+        ? colors.green(`${balance.toFixed(2)}eur`)
+        : colors.red(`${balance.toFixed(2)}eur`)
+    }`
+  );
 }
 
+// display a log in the console for each entry in Income or Expense Array
 function logEntries(entries: Income[] | Expense[]): void {
+  if (entries.length === 0) {
+    console.log(`No entry found.`);
+  } else {
+    entries.sort((e1, e2) => {
+      if (e1.paymentDate > e2.paymentDate) {
+        return 1;
+      } else if (e1.paymentDate < e2.paymentDate) {
+        return -1;
+      } else {
+        return 0;
+      }
+    });
 
-    if (entries.length === 0) {
-        console.log(`No entry found.`);
-    } else {
-        entries.sort((e1, e2) => {
-            if (e1.paymentDate > e2.paymentDate) {
-                return 1;
-            } else if (e1.paymentDate < e2.paymentDate) {
-                return -1;
-            } else {
-                return 0;
-            }
-        });
-
-        entries.forEach((entry) =>
-            console.log(`${entry.paymentDate} ${entry.amount.toFixed(2)}eur ${entry.tag}`)
-        );
-    }
-}
-
-function sumOfPayments(entries: Income[] | Expense[]): number {
-    let sum = 0;
     entries.forEach((entry) =>
-        sum += entry.amount);
-
-    return sum;
+      console.log(
+        `${entry.paymentDate} ${entry.amount.toFixed(2)}eur ${entry.tag}`
+      )
+    );
+  }
 }
 
+// returns sum of 'amount' from an array of Income or Expense
+function sumOfPayments(entries: Income[] | Expense[]): number {
+  let sum = 0;
+  entries.forEach((entry) => (sum += entry.amount));
+
+  return sum;
+}
+
+// returns 'amount' difference between sum of Income and sum of Expense 
 function getBalance(model: Model): number {
-    return sumOfPayments(model.incomes) - sumOfPayments(model.expenses);
+  return sumOfPayments(model.incomes) - sumOfPayments(model.expenses);
 }

@@ -4,12 +4,6 @@ import { AstNode, LangiumDocument, LangiumServices } from 'langium';
 import path from 'path';
 import { URI } from 'vscode-uri';
 
-export const COLOR={
-    reset: '\x1b[0m',
-    fgRed: '\x1b[31m',
-    fgGreen: '\x1b[32m'
-}
-
 export async function extractDocument(fileName: string, extensions: string[], services: LangiumServices): Promise<LangiumDocument> {
     if (!extensions.includes(path.extname(fileName))) {
         console.error(colors.yellow(`Please, choose a file with one of these extensions: ${extensions}.`));
