@@ -2,7 +2,8 @@
 //import { CompositeGeneratorNode, NL, processGeneratorNode } from "langium";
 import { Expense, Income, Model } from "../language-server/generated/ast";
 // import { extractDestinationAndName, getFileName, COLOR } from "./cli-util";
-import {getFileName, COLOR } from "./cli-util";
+import { getFileName } from "./cli-util";
+import colors from "colors";
 //import path from "path";
 
 // export function generateJavaScript(
@@ -49,15 +50,15 @@ export function generateReport(
 
     console.log("Expenses: ");
     logEntries(model.expenses);
-    console.log(`${COLOR.fgRed}Total expenses: ${sumOfPayments(model.expenses).toFixed(2)}eur${COLOR.reset} \n`);
+    console.log(colors.red(`Total expenses: ${sumOfPayments(model.expenses).toFixed(2)}eur \n`));
 
     console.log("Incomes: ");
     logEntries(model.incomes);
-    console.log(`${COLOR.fgGreen}Total expenses: ${sumOfPayments(model.incomes).toFixed(2)}eur${COLOR.reset} \n`);
+    console.log(colors.green(`Total expenses: ${sumOfPayments(model.incomes).toFixed(2)}eur \n`));
 
     console.log(`Balance: `);
     let balance = getBalance(model);
-    console.log(`${balance >= 0 ? COLOR.fgGreen : COLOR.fgRed}${balance.toFixed(2)}eur${COLOR.reset}`);
+    console.log(`${balance >= 0 ? colors.green(`${balance.toFixed(2)}eur`) : colors.red(`${balance.toFixed(2)}eur`)}`);
 }
 
 function logEntries(entries: Income[] | Expense[]): void {
@@ -75,20 +76,20 @@ function logEntries(entries: Income[] | Expense[]): void {
             }
         });
 
-        entries.forEach((entry) => 
-            console.log(`${entry.paymentDate} ${entry.amount.toFixed(2)}eur ${entry.tag}`)        
+        entries.forEach((entry) =>
+            console.log(`${entry.paymentDate} ${entry.amount.toFixed(2)}eur ${entry.tag}`)
         );
     }
 }
 
 function sumOfPayments(entries: Income[] | Expense[]): number {
     let sum = 0;
-    entries.forEach((entry) => 
-    sum += entry.amount );
+    entries.forEach((entry) =>
+        sum += entry.amount);
 
     return sum;
 }
 
-function getBalance(model: Model): number{
+function getBalance(model: Model): number {
     return sumOfPayments(model.incomes) - sumOfPayments(model.expenses);
 }
