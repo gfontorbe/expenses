@@ -5,7 +5,7 @@ import { Model } from '../language-server/generated/ast';
 import { createExpensesDslServices } from '../language-server/expenses-dsl-module';
 import { extractAstNode } from './cli-util';
 // import { generateJavaScript, generateReport } from './generator';
-import { generateReport } from './generator';
+import { generateReport, filterModelByTag, filterModelByDate } from './generator';
 
 // export const generateAction = async (fileName: string, opts: GenerateOptions): Promise<void> => {
 //     const model = await extractAstNode<Model>(fileName, languageMetaData.fileExtensions, createExpensesDslServices());
@@ -15,9 +15,16 @@ import { generateReport } from './generator';
 
 export const generateReportAction = async (fileName: string, options: GenerateOptions) : Promise<void> => {
     console.log(options);
-    const model = await extractAstNode<Model>(fileName, languageMetaData.fileExtensions, createExpensesDslServices());
+    let model = await extractAstNode<Model>(fileName, languageMetaData.fileExtensions, createExpensesDslServices());
 
-    generateReport(model, fileName, undefined);
+    if(options.tag){
+        filterModelByTag(model, options.tag);
+    }
+    if(options.date){
+        filterModelByDate(model, options.date);
+    }
+
+    generateReport(model, fileName, options);
 }
 
 export type GenerateOptions = {
