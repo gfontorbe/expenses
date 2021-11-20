@@ -5,30 +5,6 @@ import { GenerateOptions } from "./index";
 import colors from "colors";
 import path from "path";
 
-// export function generateJavaScript(
-//     model: Model,
-//     filePath: string,
-//     destination: string | undefined
-// ): string {
-//     const data = extractDestinationAndName(filePath, destination);
-//     const generatedFilePath = `${path.join(data.destination, data.name)}.js`;
-
-//     const fileNode = new CompositeGeneratorNode();
-//     fileNode.append('"use strict";', NL, NL);
-//     model.expenses.forEach((greeting) =>
-//         fileNode.append(`console.log('Hello, ${greeting.amount}!');`, NL)
-//     );
-
-//     if (!fs.existsSync(data.destination)) {
-//         fs.mkdirSync(data.destination, { recursive: true });
-//     }
-//     fs.writeFileSync(generatedFilePath, processGeneratorNode(fileNode));
-
-//     model.expenses.forEach((x) => console.log(x.amount));
-
-//     return generatedFilePath;
-// }
-
 // generate report in console
 export function generateReport(
     model: Model,
@@ -131,17 +107,11 @@ export function filterModelByDate(model: Model, date: string): void {
 }
 
 // create a report and saves it as a .txt file
-export function saveReportOnDisk(model: Model, filePath: string, options: GenerateOptions): void{
+export function saveReportOnDisk(model: Model, filePath: string, options: GenerateOptions): void {
 
     let saveFilePath = options.save as string;
-    let fileName = path.basename(filePath).replace('.exp','');
-    let saveFileName = `${fileName}${options.tag ? `_${options.tag.replace(/\s/g,'_')}`:''}${options.date ? `_${options.date.replace(/\'|\./g,'')}`:''}.txt`;
-    
-    const fileNode = new CompositeGeneratorNode();
-
-    console.log("filePath: " + filePath);
-    console.log("saveFilePath: " + saveFilePath);
-    console.log("saveFileName: " + saveFileName);
+    let fileName = path.basename(filePath).replace('.exp', '');
+    let saveFileName = `${fileName}${options.tag ? `_${options.tag.replace(/\s/g, '_')}` : ''}${options.date ? `_${options.date.replace(/\'|\./g, '')}` : ''}.txt`;
 
     // sort model by date
     model.expenses = model.expenses.sort((e1, e2) => {
@@ -153,7 +123,6 @@ export function saveReportOnDisk(model: Model, filePath: string, options: Genera
             return 0;
         }
     });
-
     model.incomes = model.incomes.sort((i1, i2) => {
         if (i1.paymentDate > i2.paymentDate) {
             return 1;
@@ -164,25 +133,27 @@ export function saveReportOnDisk(model: Model, filePath: string, options: Genera
         }
     });
 
+    const fileNode = new CompositeGeneratorNode();
+
     fileNode.append(`Report for ${fileName}`, NL, NL);
-    if(options.tag){
-        fileNode.append(`Filtered by tag "${options.tag}"`,NL);
+    if (options.tag) {
+        fileNode.append(`Filtered by tag "${options.tag}"`, NL);
     }
-    if(options.date){
+    if (options.date) {
         fileNode.append(`Filtered by date "${options.date}"`, NL);
     }
 
     fileNode.append(NL, `Expenses (${model.expenses.length}):`, NL);
-    model.expenses.forEach(e => fileNode.append(`${e.paymentDate} ${e.amount.toFixed(2)}eur ${e.tag}`,NL));
+    model.expenses.forEach(e => fileNode.append(`${e.paymentDate} ${e.amount.toFixed(2)}eur ${e.tag}`, NL));
 
     fileNode.append(NL, `Incomes (${model.incomes.length}):`, NL);
-    model.incomes.forEach(i => fileNode.append(`${i.paymentDate} ${i.amount.toFixed(2)}eur ${i.tag}`,NL));
+    model.incomes.forEach(i => fileNode.append(`${i.paymentDate} ${i.amount.toFixed(2)}eur ${i.tag}`, NL));
 
     fileNode.append(NL, `Balance: ${getBalance(model).toFixed(2)}eur`);
 
-    if(!fs.existsSync(saveFilePath)){
-         fs.mkdirSync(saveFilePath, {recursive: true});
-     }
+    if (!fs.existsSync(saveFilePath)) {
+        fs.mkdirSync(saveFilePath, { recursive: true });
+    }
 
     fs.writeFileSync(saveFilePath + saveFileName, processGeneratorNode(fileNode));
 }

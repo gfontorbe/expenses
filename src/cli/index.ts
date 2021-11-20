@@ -1,17 +1,9 @@
-// import colors from 'colors';
 import { Command } from 'commander';
 import { languageMetaData } from '../language-server/generated/module';
 import { Model } from '../language-server/generated/ast';
 import { createExpensesDslServices } from '../language-server/expenses-dsl-module';
 import { extractAstNode } from './cli-util';
-// import { generateJavaScript, generateReport } from './generator';
 import { generateReport, filterModelByTag, filterModelByDate, saveReportOnDisk } from './generator';
-
-// export const generateAction = async (fileName: string, opts: GenerateOptions): Promise<void> => {
-//     const model = await extractAstNode<Model>(fileName, languageMetaData.fileExtensions, createExpensesDslServices());
-//     const generatedFilePath = generateJavaScript(model, fileName, opts.destination);
-//     console.log(colors.green(`JavaScript code generated successfully: ${generatedFilePath}`));
-// };
 
 export const generateReportAction = async (filePath: string, options: GenerateOptions) : Promise<void> => {
     console.log(options);
