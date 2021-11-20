@@ -1,11 +1,9 @@
-//import fs from "fs";
-//import { CompositeGeneratorNode, NL, processGeneratorNode } from "langium";
+import fs from "fs";
+import { CompositeGeneratorNode, NL, processGeneratorNode } from "langium";
 import { Expense, Income, Model } from "../language-server/generated/ast";
-// import { extractDestinationAndName, getFileName, COLOR } from "./cli-util";
-import { getFileName } from "./cli-util";
 import { GenerateOptions } from "./index";
 import colors from "colors";
-//import path from "path";
+import path from "path";
 
 // export function generateJavaScript(
 //     model: Model,
@@ -36,7 +34,7 @@ export function generateReport(
     model: Model,
     filePath: string, options: GenerateOptions
 ): void {
-    const fileName = getFileName(filePath);
+    const fileName = path.basename(filePath);
     console.log(`Generating report for ${fileName}... \n`);
 
     if (options.tag) {
@@ -126,8 +124,65 @@ export function filterModelByTag(model: Model, tag: string): void {
     model.incomes = model.incomes.filter(x => x.tag === tag);
 }
 
-//filter model by date
+// filter model by date
 export function filterModelByDate(model: Model, date: string): void {
     model.expenses = model.expenses.filter(x => x.paymentDate === date);
     model.incomes = model.incomes.filter(x => x.paymentDate === date);
+}
+
+// create a report and saves it as a .txt file
+export function saveReportOnDisk(model: Model, filePath: string, options: GenerateOptions): void{
+
+    let saveFilePath = options.save as string;
+    let fileName = path.basename(filePath).replace('.exp','');
+    let saveFileName = `${fileName}${options.tag ? `_${options.tag.replace(/\s/g,'_')}`:''}${options.date ? `_${options.date.replace(/\'|\./g,'')}`:''}.txt`;
+    
+    const fileNode = new CompositeGeneratorNode();
+
+    console.log("filePath: " + filePath);
+    console.log("saveFilePath: " + saveFilePath);
+    console.log("saveFileName: " + saveFileName);
+
+    // sort model by date
+    model.expenses = model.expenses.sort((e1, e2) => {
+        if (e1.paymentDate > e2.paymentDate) {
+            return 1;
+        } else if (e1.paymentDate < e2.paymentDate) {
+            return -1;
+        } else {
+            return 0;
+        }
+    });
+
+    model.incomes = model.incomes.sort((i1, i2) => {
+        if (i1.paymentDate > i2.paymentDate) {
+            return 1;
+        } else if (i1.paymentDate < i2.paymentDate) {
+            return -1;
+        } else {
+            return 0;
+        }
+    });
+
+    fileNode.append(`Report for ${fileName}`, NL, NL);
+    if(options.tag){
+        fileNode.append(`Filtered by tag "${options.tag}"`,NL);
+    }
+    if(options.date){
+        fileNode.append(`Filtered by date "${options.date}"`, NL);
+    }
+
+    fileNode.append(NL, `Expenses (${model.expenses.length}):`, NL);
+    model.expenses.forEach(e => fileNode.append(`${e.paymentDate} ${e.amount.toFixed(2)}eur ${e.tag}`,NL));
+
+    fileNode.append(NL, `Incomes (${model.incomes.length}):`, NL);
+    model.incomes.forEach(i => fileNode.append(`${i.paymentDate} ${i.amount.toFixed(2)}eur ${i.tag}`,NL));
+
+    fileNode.append(NL, `Balance: ${getBalance(model).toFixed(2)}eur`);
+
+    if(!fs.existsSync(saveFilePath)){
+         fs.mkdirSync(saveFilePath, {recursive: true});
+     }
+
+    fs.writeFileSync(saveFilePath + saveFileName, processGeneratorNode(fileNode));
 }
