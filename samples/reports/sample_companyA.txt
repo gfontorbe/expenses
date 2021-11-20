@@ -1,0 +1,11 @@
+Report for sample
+
+Filtered by tag "companyA"
+
+Expenses (0):
+
+Incomes (2):
+13.11.2021 2500.00eur companyA
+30.11.2021 2500.00eur companyA
+
+Balance: 5000.00eur

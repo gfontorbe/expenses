@@ -1,0 +1,14 @@
+Report for sample
+
+Filtered by date "01.11.2021"
+
+Expenses (3):
+01.11.2021 5125.25eur salary
+01.11.2021 4256.24eur salary
+01.11.2021 3857.62eur salary
+
+Incomes (2):
+01.11.2021 10000.00eur state grant
+01.11.2021 5000.00eur sponsorship
+
+Balance: 1760.89eur

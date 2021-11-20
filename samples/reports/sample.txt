@@ -1,0 +1,20 @@
+Report for sample
+
+
+Expenses (7):
+01.11.2021 5125.25eur salary
+01.11.2021 4256.24eur salary
+01.11.2021 3857.62eur salary
+07.11.2021 586.75eur office supplies
+15.11.2021 150.00eur electricity
+15.11.2021 175.86eur water
+21.11.2021 750.74eur catering
+
+Incomes (5):
+01.11.2021 10000.00eur state grant
+01.11.2021 5000.00eur sponsorship
+11.11.2021 3200.00eur companyB
+13.11.2021 2500.00eur companyA
+30.11.2021 2500.00eur companyA
+
+Balance: 8297.54eur
