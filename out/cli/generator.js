@@ -27,7 +27,7 @@ function generateReport(model, filePath, options) {
     console.log(colors_1.default.red(`Total expenses: ${sumOfPayments(model.expenses).toFixed(2)}eur \n`));
     console.log("Incomes: ");
     logEntries(model.incomes);
-    console.log(colors_1.default.green(`Total expenses: ${sumOfPayments(model.incomes).toFixed(2)}eur \n`));
+    console.log(colors_1.default.green(`Total incomes: ${sumOfPayments(model.incomes).toFixed(2)}eur \n`));
     console.log(`Balance: `);
     let balance = getBalance(model);
     console.log(`${balance >= 0
@@ -115,8 +115,10 @@ function saveReportOnDisk(model, filePath, options) {
     }
     fileNode.append(langium_1.NL, `Expenses (${model.expenses.length}):`, langium_1.NL);
     model.expenses.forEach(e => fileNode.append(`${e.paymentDate} ${e.amount.toFixed(2)}eur ${e.tag}`, langium_1.NL));
+    fileNode.append(langium_1.NL, `Total expenses: ${sumOfPayments(model.expenses)}`, langium_1.NL);
     fileNode.append(langium_1.NL, `Incomes (${model.incomes.length}):`, langium_1.NL);
     model.incomes.forEach(i => fileNode.append(`${i.paymentDate} ${i.amount.toFixed(2)}eur ${i.tag}`, langium_1.NL));
+    fileNode.append(langium_1.NL, `Total incomes: ${sumOfPayments(model.incomes)}`, langium_1.NL);
     fileNode.append(langium_1.NL, `Balance: ${getBalance(model).toFixed(2)}eur`);
     if (!fs_1.default.existsSync(saveFilePath)) {
         fs_1.default.mkdirSync(saveFilePath, { recursive: true });

@@ -44,7 +44,7 @@ export function generateReport(
     logEntries(model.incomes);
     console.log(
         colors.green(
-            `Total expenses: ${sumOfPayments(model.incomes).toFixed(2)}eur \n`
+            `Total incomes: ${sumOfPayments(model.incomes).toFixed(2)}eur \n`
         )
     );
 
@@ -146,8 +146,12 @@ export function saveReportOnDisk(model: Model, filePath: string, options: Genera
     fileNode.append(NL, `Expenses (${model.expenses.length}):`, NL);
     model.expenses.forEach(e => fileNode.append(`${e.paymentDate} ${e.amount.toFixed(2)}eur ${e.tag}`, NL));
 
+    fileNode.append(NL, `Total expenses: ${sumOfPayments(model.expenses)}`, NL);
+
     fileNode.append(NL, `Incomes (${model.incomes.length}):`, NL);
     model.incomes.forEach(i => fileNode.append(`${i.paymentDate} ${i.amount.toFixed(2)}eur ${i.tag}`, NL));
+
+    fileNode.append(NL, `Total incomes: ${sumOfPayments(model.incomes)}`, NL);
 
     fileNode.append(NL, `Balance: ${getBalance(model).toFixed(2)}eur`);
 
